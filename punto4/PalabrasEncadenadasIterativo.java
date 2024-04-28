@@ -1,0 +1,62 @@
+/*Autor: Andres Felipe Aristizabal - Edison Hoover Largo
+ * Metodo: Se requier un algoritmo que identifique si las palabras en una matriz son palabras encadenadas,
+ * realizando un recorrido comun yendo de fila en fila de manera ascendente.
+
+    Dos palabras están encadenadas cuando las dos últimas letras de la primera palabra 
+    son iguales a las dos primeras letras de la última(en el mismo orden).
+ */
+
+
+package punto4;
+
+public class PalabrasEncadenadasIterativo {
+
+    public static void main(String[] args) {
+        long startTime = System.currentTimeMillis();
+        String[][] matriz = { {"sien", "encima","mapa"}, {"pata", "tapa", "papa"}, {"pato", "toma", "mama"} };
+        boolean isEncadenada= verificarPalabrasEncadenadas(matriz);
+
+        for (int i = 0; i < matriz.length; i++) {
+            for (int j = 0; j < matriz[0].length; j++) {
+                System.out.print(matriz[i][j] + "\t");
+            }
+            System.out.println();
+        }
+
+        if(isEncadenada){
+            System.out.println("La lista de palabras en la matriz corresponde a palabras encadenadas: " + isEncadenada);
+        }else{
+            System.out.println("La lista de palabras en la matriz no corresponde a palabras encadenas en su totalidad: " + isEncadenada);
+        }
+
+        long endTime = System.currentTimeMillis();
+        long executionTime = endTime - startTime;
+        System.out.println("El tiempo de ejecución fue de: " + executionTime + " milisegundos");
+    }
+
+    public  static boolean verificarPalabrasEncadenadas(String matriz[][]){
+        boolean encad = true;
+        for(int i = 0; i < matriz.length; i++){
+            for(int j = 0; j < matriz[0].length; j++){
+                if(j == matriz[0].length-1 && i < matriz.length-1){ //Verifica que nos estemos moviendo sobre una fila
+                    //Comprueba que en efecto las 2 ultimas letras de una palabra sean las 2 primeras de la siguiente.
+                    String termina = matriz[i][j].substring(matriz[i][j].length()-2, matriz[i][j].length()-1);
+                        if(matriz[i+1][0].startsWith(termina) == true) {
+                            encad = true;
+                        }else{
+                            encad = false;
+                        }
+                }else if(j < matriz[0].length-1){ //recorre hasta la penultima posicion
+                    String termina = matriz[i][j].substring(matriz[i][j].length()-2, matriz[i][j].length()-1);
+		            if(matriz[i][j+1].startsWith(termina) == true) {
+			            encad = true;
+                    }else{
+                        encad = false;
+                    }
+                }
+            }
+        }
+        return encad;
+    }
+    
+}
